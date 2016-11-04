@@ -2,19 +2,21 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MdlModule } from 'angular2-mdl';
+import {MaterializeDirective} from "angular2-materialize";
 
-import { AppComponent } from './app.component';
+import { AppComponent } from './app/app.component';
+import { WhiteboardComponent } from './whiteboard/whiteboard.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    MaterializeDirective,
+    AppComponent,
+    WhiteboardComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule,
-    MdlModule
+    HttpModule
   ],
   providers: [],
   bootstrap: [AppComponent]
