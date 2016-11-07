@@ -6,17 +6,21 @@ import {MaterializeDirective} from "angular2-materialize";
 
 import { AppComponent } from './app/app.component';
 import { WhiteboardComponent } from './whiteboard/whiteboard.component';
+import { CollaboardRouting } from './app/app.routing';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
   declarations: [
     MaterializeDirective,
     AppComponent,
-    WhiteboardComponent
+    WhiteboardComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    CollaboardRouting
   ],
   providers: [],
   bootstrap: [AppComponent]
