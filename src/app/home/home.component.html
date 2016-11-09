@@ -11,33 +11,22 @@
   </nav>
 </div>
 <div class="row">
-  <div class="col s12 m6 l3">
+  <div class="col s12 m6 l3" *ngFor="let whiteboard of whiteboards">
     <div class="card">
       <div class="card-content">
-        <div class="right-align">
+        <div class="right-align" *ngIf="whiteboard.owner.currentUser">
           <a><i class="material-icons">lock_open</i></a>
           <a><i class="material-icons">settings</i></a>
           <a><i class="material-icons">delete</i></a>
         </div>
-        <p>LES 2016 - Team A</p>
-        <p>Owner: Marco Rodrigues</p>
-      </div>
-      <div class="card-action">
-        <a routerLink="/whiteboard/1">Open Whiteboard</a>
-      </div>
-    </div>
-  </div>
-  <div class="col s12 m6 l3">
-    <div class="card">
-      <div class="card-content">
-        <div class="right-align">
+        <div class="right-align" *ngIf="!whiteboard.owner.currentUser">
           <a><i class="material-icons">clear</i></a>
         </div>
-        <p>MESW</p>
-        <p>Owner: Ana Paiva</p>
+        <p>{{whiteboard.name}}</p>
+        <p>Owner: {{whiteboard.owner.name}}</p>
       </div>
       <div class="card-action">
-        <a routerLink="/whiteboard/2">Open Whiteboard</a>
+        <a routerLink="/whiteboard/{{whiteboard.id}}">Open Whiteboard</a>
       </div>
     </div>
   </div>

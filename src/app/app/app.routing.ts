@@ -18,6 +18,11 @@ const appRoutes: Routes = [
     {
         path: 'whiteboard/:id',
         component: WhiteboardComponent
+    },
+    {
+        path: '**',
+        redirectTo: '/home',
+        pathMatch: 'full'
     }
 ];
 

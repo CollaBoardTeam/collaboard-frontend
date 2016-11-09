@@ -7,7 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  whiteboards = [];
+
+  constructor() {
+    this.whiteboards[0] = { id: 1, name: "LES 2016 - Team A", owner: { name: "Marco Rodrigues", currentUser: true } };
+    this.whiteboards[1] = { id: 2, name: "MESW", owner: { name: "Ana Paiva", currentUser: false } };
+  }
 
   ngOnInit() {
   }
