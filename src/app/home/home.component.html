@@ -34,31 +34,42 @@
 <div id="createWhiteboardModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer">
   <div class="modal-content">
     <h4>Create Whiteboard</h4>
-    <div class="input-field">
-      <input id="whiteboardName" type="text" class="validate">
-      <label for="whiteboardName">Name</label>
-    </div>
-    <div class="row">
-      <div class="col">
-        <ul class="tabs">
-          <li class="tab col"><a class="active" href="#tabStickyNote">Sticky Notes</a></li>
-          <li class="tab col"><a href="#tabGroups">Groups</a></li>
-          <li class="tab col"><a href="#tabMembers">Members</a></li>
-        </ul>
+    <form materialize class="col s12">
+      <div class="row">
+        <div class="col s12 input-field">
+          <input id="whiteboardName" type="text" class="validate" [(ngModel)]="newWhiteboard.name" name="whiteboardName">
+          <label for="whiteboardName">Name</label>
+        </div>
       </div>
-      <div id="tabStickyNote" class="col s12">
-        <a class="waves-effect waves-light btn"><i class="material-icons left">add</i>Add Parameter</a>
-        <ul class="collection">
-          <li class="collection-item">Due Date<a><i class="material-icons right">delete</i></a></li>
-        </ul>
+      <div class="row">
+        <div class="col s12">
+          <ul class="tabs">
+            <li class="tab col"><a class="active" href="#tabStickyNote">Sticky Notes</a></li>
+            <li class="tab col disabled"><a href="#tabGroups">Groups</a></li>
+            <li class="tab col disabled"><a href="#tabMembers">Members</a></li>
+          </ul>
+        </div>
+        <div id="tabStickyNote" class="col s12">
+          <div class="right-align">
+            <a class="waves-effect waves-light btn" (click)="addParameter()"><i class="material-icons left">add</i>Add Parameter</a>
+          </div>
+          <ul class="collection" *ngFor="let parameter of newWhiteboard.parameters; let i = index">
+            <li class="collection-item valign-wrapper">
+              <div class="col s11">
+              <input id="parameterName{{i}}" type="text" class="validate" [(ngModel)]="newWhiteboard.parameters[i].value" name="parameterName{{i}}">
+              </div>
+              <a class="secondary-content col"><i class="material-icons" (click)="deleteParameter(i)">delete</i></a>
+            </li>
+          </ul>
+        </div>
+        <div id="tabGroups" class="col s12">Test 2</div>
+        <div id="tabMembers" class="col s12">Test 3</div>
       </div>
-      <div id="tabGroups" class="col s12">Test 2</div>
-      <div id="tabMembers" class="col s12">Test 3</div>
-    </div>
+    </form>
   </div>
   <div class="modal-footer">
-    <a class="waves-effect waves-green btn-flat" (click)="closeCreateWhiteboardModal()">Create</a>
-    <a class="waves-effect waves-green btn-flat" (click)="closeCreateWhiteboardModal()">Cancel</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeCreateWhiteboardModal()">Create</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeCreateWhiteboardModal()">Cancel</a>
   </div>
 
 </div>
