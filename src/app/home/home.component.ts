@@ -18,13 +18,14 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    
   }
 
   openCreateWhiteboardModal() {
     this.newWhiteboard = { name: '', parameters: [] };
 
     $("#createWhiteboardModal").modal('open');
+    $('#createWhiteboardTabs').tabs('select_tab', 'tabStickyNote');
   }
 
   closeCreateWhiteboardModal() {
