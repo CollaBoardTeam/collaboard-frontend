@@ -1,20 +1,25 @@
+import 'rxjs/add/operator/switchMap';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { WhiteboardService } from './whiteboard.service';
 
 @Component({
   selector: 'whiteboard',
   templateUrl: './whiteboard.component.html',
-  styleUrls: ['./whiteboard.component.css']
+  styleUrls: ['./whiteboard.component.css'],
+  providers: [WhiteboardService]
 })
 export class WhiteboardComponent implements OnInit {
 
   stickyNotes = [];
 
-  constructor() {
-    this.stickyNotes[0] = { id: 1, name: "Write Github Wiki", color: "#ffeb3b", parameters: [{ name: "Due Date", value: "04/11/2016" }] };
-    this.stickyNotes[1] = { id: 2, name: "Update Pivotal Tracker with User Stories", color: "#00bcd4", parameters: [{ name: "Sprint", value: "2" }, { name: "Comments", value: "Include user stories not covered in previous sprint" }] };
+  constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService) {
   }
 
   ngOnInit() {
+    this.route.params
+      .switchMap((params: Params) => this.whiteboardService.getStickyNotes(+params['id']))
+      .subscribe(stickyNotes => this.stickyNotes = stickyNotes);
   }
 
 }
