@@ -55,7 +55,6 @@ export class WhiteboardComponent implements OnInit {
 
   openDeleteStickyNoteModal(stickyNote) {
     this.selectedStickyNote = stickyNote;
-    Materialize.updateTextFields();
     $("#deleteStickyNoteModal").modal('open');
   }
 
