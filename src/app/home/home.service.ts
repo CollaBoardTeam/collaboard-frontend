@@ -6,7 +6,7 @@ export class HomeService {
 
   baseUrl = "http://les16a.fe.up.pt/";
   getWhiteboardsPath = "public/wbs_by_user/";
-  createWhiteboardsPath = "private/create-wb/";
+  createWhiteboardPath = "private/create-wb/";
 
   constructor(private http: Http) { }
 
@@ -19,7 +19,7 @@ export class HomeService {
   createWhiteboard(layoutID, boardName, userID): Promise<any[]> {
     var whiteboard = { 'layoutID': layoutID, 'boardName': boardName, 'userID': userID };
 
-    return this.http.post(this.baseUrl + this.createWhiteboardsPath, whiteboard)
+    return this.http.post(this.baseUrl + this.createWhiteboardPath, whiteboard)
       .toPromise()
       .then(response => response.json() as any[]);
   }
