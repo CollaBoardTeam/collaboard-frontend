@@ -19,7 +19,9 @@ export class WhiteboardComponent implements OnInit {
   ngOnInit() {
     this.route.params
       .switchMap((params: Params) => this.whiteboardService.getStickyNotes(+params['id']))
-      .subscribe(stickyNotes => this.stickyNotes = stickyNotes);
+      .subscribe(stickyNotes => {
+        this.stickyNotes = stickyNotes['message'];
+      });
   }
 
 }
