@@ -18,7 +18,10 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.homeService.getWhiteboards().then(whiteboards => this.whiteboards = whiteboards);
+    this.homeService.getWhiteboards().then(whiteboards => {
+      this.whiteboards = whiteboards['message'];
+      console.log(this.whiteboards);
+    });    
   }
 
   openCreateWhiteboardModal() {

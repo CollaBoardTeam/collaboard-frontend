@@ -14,19 +14,19 @@
   <div class="col s12 m6 l3" *ngFor="let whiteboard of whiteboards">
     <div class="card">
       <div class="card-content">
-        <div class="right-align" *ngIf="whiteboard.owner.currentUser">
+        <div class="right-align" *ngIf="whiteboard.description === owner">
           <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">lock_open</i></a>
           <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
           <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
-        <div class="right-align" *ngIf="!whiteboard.owner.currentUser">
+        <div class="right-align" *ngIf="whiteboard.description !== owner">
           <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">clear</i></a>
         </div>
-        <p>{{whiteboard.name}}</p>
-        <p>Owner: {{whiteboard.owner.name}}</p>
+        <p>{{whiteboard.boardName}}</p>
+        <p>Owner: Marco Rodrigues</p>
       </div>
       <div class="card-action">
-        <a class="orange-text text-darken-2" routerLink="/whiteboard/{{whiteboard.id}}">Open Whiteboard</a>
+        <a class="orange-text text-darken-2" routerLink="/whiteboard/{{whiteboard.idWhiteBoard}}">Open Whiteboard</a>
       </div>
     </div>
   </div>

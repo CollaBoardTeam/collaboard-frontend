@@ -1,15 +1,18 @@
 import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class HomeService {
 
-  constructor() { }
+  baseUrl = "http://les16a.fe.up.pt/";
+  getWhiteboardsPath = "public/wbs_by_user/";
+
+  constructor(private http: Http) { }
 
   getWhiteboards(): Promise<any[]> {
-    var whiteboards = [];
-    whiteboards[0] = { id: 1, name: "LES 2016 - Team A", owner: { name: "Marco Rodrigues", currentUser: true } };
-    whiteboards[1] = { id: 2, name: "MESW", owner: { name: "Ana Paiva", currentUser: false } };
-    return Promise.resolve(whiteboards);
+    return this.http.get(this.baseUrl + this.getWhiteboardsPath + 1)
+      .toPromise()
+      .then(response => response.json() as any[]);
   }
 
 }
