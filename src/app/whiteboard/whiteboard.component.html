@@ -17,7 +17,8 @@
     <div class="card">
       <div class="card-content" [ngStyle]="{'background-color': stickyNote.color}">
         <div class="right-align">
-          <a><i class="material-icons">edit</i></a>
+          <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">edit</i></a>
+          <a class="waves-effect waves-light" (click)="openDeleteStickyNoteModal(stickyNote)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
         <p>{{stickyNote.lineContent}}</p>
         <p *ngFor="let param of stickyNote.parameters">{{param.name}} {{param.value}}</p>
@@ -40,5 +41,15 @@
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="createStickyNote()">Create</a>
     <a class="waves-effect waves-light btn-flat" (click)="closeCreateStickyNoteModal()">Cancel</a>
+  </div>
+</div>
+<div id="deleteStickyNoteModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
+  <div class="modal-content" *ngIf="selectedStickyNote">
+    <h4>Delete Sticky Note</h4>
+    <p>Are you sure you want to delete sticky note <b>{{selectedStickyNote.lineContent}}</b>?</p>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn-flat" (click)="deleteStickyNote()">Delete</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeDeleteStickyNoteModal()">Cancel</a>
   </div>
 </div>

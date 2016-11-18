@@ -4,24 +4,30 @@ import { Http } from '@angular/http';
 @Injectable()
 export class WhiteboardService {
 
-  baseUrl = "http://les16a.fe.up.pt/";
-  getWhiteboardsPath = "public/get_wb_content/";
-  createStickyNotePath = "private/create-st/";
+    baseUrl = "http://les16a.fe.up.pt/";
+    getWhiteboardsPath = "public/get_wb_content/";
+    createStickyNotePath = "private/create-st/";
+    deleteStickyNotePath = "private/delete-st/";
 
-  constructor(private http: Http) { }
+    constructor(private http: Http) { }
 
-  getStickyNotes(id: number): Promise<any[]> {
-    return this.http.get(this.baseUrl + this.getWhiteboardsPath + id)
-      .toPromise()
-      .then(response => response.json() as any[]);
-  }
+    getStickyNotes(id: number): Promise<any[]> {
+        return this.http.get(this.baseUrl + this.getWhiteboardsPath + id)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
 
-  createStickyNote(userID, content, position, wbGroupID): Promise<any[]> {
-    var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID };
+    createStickyNote(userID, content, position, wbGroupID): Promise<any[]> {
+        var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID };
 
-    return this.http.post(this.baseUrl + this.createStickyNotePath, stickyNote)
-      .toPromise()
-      .then(response => response.json() as any[]);
-  }
+        return this.http.post(this.baseUrl + this.createStickyNotePath, stickyNote)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
 
+    deleteStickyNote(stickyNoteId): Promise<any[]> {
+        return this.http.delete(this.baseUrl + this.deleteStickyNotePath + stickyNoteId)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
 }

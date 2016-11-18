@@ -16,6 +16,7 @@ export class WhiteboardComponent implements OnInit {
   whiteboardId;
   stickyNotes = [];
   newStickyNote = { name: '' };
+  selectedStickyNote;
 
   constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService) {
   }
@@ -43,11 +44,27 @@ export class WhiteboardComponent implements OnInit {
     $("#createStickyNoteModal").modal('close');
   }
 
+  openDeleteStickyNoteModal(stickyNote) {
+    this.selectedStickyNote = stickyNote;
+    $("#deleteStickyNoteModal").modal('open');
+  }
+
+  closeDeleteStickyNoteModal() {
+    $("#deleteStickyNoteModal").modal('close');
+  }
+
   createStickyNote() {
     this.whiteboardService.createStickyNote(1, this.newStickyNote.name, 1, this.whiteboardId).then(response => {
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();
+  }
+
+  deleteStickyNote() {
+    this.whiteboardService.deleteStickyNote(this.selectedStickyNote.idSticky).then(response => {
+      this.loadStickyNotes();
+    });
+    this.closeDeleteStickyNoteModal();
   }
 
 }
