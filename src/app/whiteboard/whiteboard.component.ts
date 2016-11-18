@@ -15,7 +15,7 @@ export class WhiteboardComponent implements OnInit {
 
   whiteboardId;
   stickyNotes = [];
-  newStickyNote = { name: '' };
+  newStickyNote = {};
   selectedStickyNote;
 
   constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService) {
@@ -35,7 +35,7 @@ export class WhiteboardComponent implements OnInit {
   }
 
   openCreateStickyNoteModal() {
-    this.newStickyNote = { name: '' };
+    this.newStickyNote = {};
 
     $("#createStickyNoteModal").modal('open');
   }
@@ -44,8 +44,18 @@ export class WhiteboardComponent implements OnInit {
     $("#createStickyNoteModal").modal('close');
   }
 
+  openEditStickyNoteModal(stickyNote) {
+    this.newStickyNote = Object.assign({}, stickyNote);
+    $("#editStickyNoteModal").modal('open');
+  }
+
+  closeEditStickyNoteModal() {
+    $("#editStickyNoteModal").modal('close');
+  }
+
   openDeleteStickyNoteModal(stickyNote) {
     this.selectedStickyNote = stickyNote;
+    Materialize.updateTextFields();
     $("#deleteStickyNoteModal").modal('open');
   }
 
@@ -54,10 +64,17 @@ export class WhiteboardComponent implements OnInit {
   }
 
   createStickyNote() {
-    this.whiteboardService.createStickyNote(1, this.newStickyNote.name, 1, this.whiteboardId).then(response => {
+    this.whiteboardService.createStickyNote(1, this.newStickyNote["lineContent"], 1, this.whiteboardId).then(response => {
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();
+  }
+
+  editStickyNote() {
+    this.whiteboardService.editStickyNote(this.newStickyNote["idSticky"], this.newStickyNote["lineContent"], this.newStickyNote["indexLine"]).then(response => {
+      this.loadStickyNotes();
+    });
+    this.closeEditStickyNoteModal();
   }
 
   deleteStickyNote() {

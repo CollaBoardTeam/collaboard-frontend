@@ -7,6 +7,7 @@ export class WhiteboardService {
     baseUrl = "http://les16a.fe.up.pt/";
     getWhiteboardsPath = "public/get_wb_content/";
     createStickyNotePath = "private/create-st/";
+    editStickyNotePath = "private/edit-st/";
     deleteStickyNotePath = "private/delete-st/";
 
     constructor(private http: Http) { }
@@ -21,6 +22,14 @@ export class WhiteboardService {
         var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID };
 
         return this.http.post(this.baseUrl + this.createStickyNotePath, stickyNote)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    editStickyNote(stickyNoteId, content, indexLine): Promise<any[]> {
+        var stickyNote = { 'snID': stickyNoteId, 'contentLine': content, 'lineID': indexLine };
+
+        return this.http.put(this.baseUrl + this.editStickyNotePath, stickyNote)
             .toPromise()
             .then(response => response.json() as any[]);
     }

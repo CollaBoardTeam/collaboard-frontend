@@ -17,7 +17,7 @@
     <div class="card">
       <div class="card-content" [ngStyle]="{'background-color': stickyNote.color}">
         <div class="right-align">
-          <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">edit</i></a>
+          <a class="waves-effect waves-light" (click)="openEditStickyNoteModal(stickyNote)"><i class="material-icons light-blue-text text-lighten-2">edit</i></a>
           <a class="waves-effect waves-light" (click)="openDeleteStickyNoteModal(stickyNote)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
         <p>{{stickyNote.lineContent}}</p>
@@ -41,6 +41,23 @@
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="createStickyNote()">Create</a>
     <a class="waves-effect waves-light btn-flat" (click)="closeCreateStickyNoteModal()">Cancel</a>
+  </div>
+</div>
+<div id="editStickyNoteModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
+  <div class="modal-content" *ngIf="newStickyNote">
+    <h4>Edit Sticky Note</h4>
+    <form materialize class="col s12">
+      <div class="row">
+        <div class="col s12 input-field">
+          <input placeholder="{{newStickyNote.lineContent}}" id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.lineContent" name="stickyNoteName">
+          <label for="stickyNoteName">Name</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn-flat" (click)="editStickyNote()">Edit</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeEditStickyNoteModal()">Cancel</a>
   </div>
 </div>
 <div id="deleteStickyNoteModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
