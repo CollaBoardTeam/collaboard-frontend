@@ -18,10 +18,13 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadWhiteboards();
+  }
+
+  loadWhiteboards() {
     this.homeService.getWhiteboards().then(whiteboards => {
       this.whiteboards = whiteboards['message'];
-      console.log(this.whiteboards);
-    });    
+    });
   }
 
   openCreateWhiteboardModal() {
@@ -33,6 +36,13 @@ export class HomeComponent implements OnInit {
 
   closeCreateWhiteboardModal() {
     $("#createWhiteboardModal").modal('close');
+  }
+
+  createWhiteboard() {
+    this.homeService.createWhiteboard(1, this.newWhiteboard.name, 1).then(response => {
+      this.loadWhiteboards();
+    });
+    this.closeCreateWhiteboardModal();
   }
 
   addParameter() {
