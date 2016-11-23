@@ -15,6 +15,7 @@ export class WhiteboardComponent implements OnInit {
 
   whiteboardId;
   stickyNotes = [];
+  stickyNotesColors = [];
   newStickyNote = {};
   selectedStickyNote;
 
@@ -25,6 +26,7 @@ export class WhiteboardComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.whiteboardId = params['id'];
       this.loadStickyNotes();
+      this.loadStickyNotesColors();
     });
   }
 
@@ -34,8 +36,15 @@ export class WhiteboardComponent implements OnInit {
     });
   }
 
+  loadStickyNotesColors() {
+    this.whiteboardService.getColors().then(response => {
+      this.stickyNotesColors = response['message'];
+    });
+  }
+
   openCreateStickyNoteModal() {
     this.newStickyNote = {};
+    this.newStickyNote["color"] = this.stickyNotesColors[0].color;
 
     $("#createStickyNoteModal").modal('open');
   }
@@ -46,6 +55,7 @@ export class WhiteboardComponent implements OnInit {
 
   openEditStickyNoteModal(stickyNote) {
     this.newStickyNote = Object.assign({}, stickyNote);
+    this.newStickyNote["oldColor"] = this.newStickyNote["color"];
     $("#editStickyNoteModal").modal('open');
   }
 
@@ -71,9 +81,23 @@ export class WhiteboardComponent implements OnInit {
 
   editStickyNote() {
     this.whiteboardService.editStickyNote(this.newStickyNote["idSticky"], this.newStickyNote["lineContent"], this.newStickyNote["indexLine"]).then(response => {
-      this.loadStickyNotes();
+      if (this.newStickyNote["oldColor"] !== this.newStickyNote["color"]) {
+        this.whiteboardService.changeStickyNoteColor(this.newStickyNote["idSticky"], this.getColorId(this.newStickyNote["color"])).then(response => {
+          this.loadStickyNotes();
+        });
+      } else {
+        this.loadStickyNotes();
+      }
     });
     this.closeEditStickyNoteModal();
+  }
+
+  getColorId(colorHex){
+    var color = this.stickyNotesColors.find(color => color.color === colorHex);
+    if(color){
+      return color["idColor"];
+    }
+    return -1;
   }
 
   deleteStickyNote() {

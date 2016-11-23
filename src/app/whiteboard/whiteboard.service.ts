@@ -5,15 +5,23 @@ import { Http } from '@angular/http';
 export class WhiteboardService {
 
     baseUrl = "http://les16a.fe.up.pt/";
-    getWhiteboardsPath = "public/get_wb_content/";
+    getStickyNotesPath = "public/get_wb_content/";
+    getColorsPath = "public/get-colors/";
     createStickyNotePath = "private/create-st/";
     editStickyNotePath = "private/edit-st/";
+    changeStickyNoteColorPath = "private/edit-st-color/";
     deleteStickyNotePath = "private/delete-st/";
 
     constructor(private http: Http) { }
 
     getStickyNotes(id: number): Promise<any[]> {
-        return this.http.get(this.baseUrl + this.getWhiteboardsPath + id)
+        return this.http.get(this.baseUrl + this.getStickyNotesPath + id)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    getColors(): Promise<any[]> {
+        return this.http.get(this.baseUrl + this.getColorsPath)
             .toPromise()
             .then(response => response.json() as any[]);
     }
@@ -30,6 +38,13 @@ export class WhiteboardService {
         var stickyNote = { 'snID': stickyNoteId, 'contentLine': content, 'lineID': indexLine };
 
         return this.http.put(this.baseUrl + this.editStickyNotePath, stickyNote)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    changeStickyNoteColor(stickyNoteId, colorId): Promise<any[]> {
+        var stickyNote = { 'snID': stickyNoteId, 'snColorID': colorId };
+        return this.http.put(this.baseUrl + this.changeStickyNoteColorPath, stickyNote)
             .toPromise()
             .then(response => response.json() as any[]);
     }
