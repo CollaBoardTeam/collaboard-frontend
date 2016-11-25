@@ -12,7 +12,7 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 
   whiteboards = [];
-  newWhiteboard = { name: '', parameters: [] };
+  newWhiteboard = { boardName: '', parameters: [] };
 
   constructor(private homeService: HomeService) {
   }
@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
   }
 
   openCreateWhiteboardModal() {
-    this.newWhiteboard = { name: '', parameters: [] };
+    this.newWhiteboard = { boardName: '', parameters: [] };
 
     $("#createWhiteboardModal").modal('open');
     $('#createWhiteboardTabs').tabs('select_tab', 'tabStickyNote');
@@ -38,11 +38,28 @@ export class HomeComponent implements OnInit {
     $("#createWhiteboardModal").modal('close');
   }
 
+  openEditWhiteboardModal(whiteboard) {
+    this.newWhiteboard = Object.assign({}, whiteboard);
+
+    $("#editWhiteboardModal").modal('open');
+  }
+
+  closeEditWhiteboardModal() {
+    $("#editWhiteboardModal").modal('close');
+  }
+
   createWhiteboard() {
-    this.homeService.createWhiteboard(1, this.newWhiteboard.name, 1).then(response => {
+    this.homeService.createWhiteboard(1, this.newWhiteboard.boardName, 1).then(response => {
       this.loadWhiteboards();
     });
     this.closeCreateWhiteboardModal();
+  }
+
+  editWhiteboard() {
+    this.homeService.editWhiteboard(this.newWhiteboard["idWhiteBoard"], this.newWhiteboard.boardName).then(response => {
+      this.loadWhiteboards();
+    });
+    this.closeEditWhiteboardModal();
   }
 
   deleteWhiteboard(wbID, userID) {

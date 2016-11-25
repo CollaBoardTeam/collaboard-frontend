@@ -16,7 +16,7 @@
       <div class="card-content">
         <div class="right-align" *ngIf="whiteboard.description === 'owner'">
           <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">lock_open</i></a>
-          <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
+          <a class="waves-effect waves-light" (click)="openEditWhiteboardModal(whiteboard)"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
           <a class="waves-effect waves-light" (click)="deleteWhiteboard(whiteboard.idWhiteBoard,1)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
         <div class="right-align" *ngIf="whiteboard.description !== 'owner'">
@@ -37,7 +37,7 @@
     <form materialize class="col s12">
       <div class="row">
         <div class="col s12 input-field">
-          <input id="whiteboardName" type="text" [(ngModel)]="newWhiteboard.name" name="whiteboardName">
+          <input id="whiteboardName" type="text" [(ngModel)]="newWhiteboard.boardName" name="whiteboardName">
           <label for="whiteboardName">Name</label>
         </div>
       </div>
@@ -70,5 +70,23 @@
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="createWhiteboard()">Create</a>
     <a class="waves-effect waves-light btn-flat" (click)="closeCreateWhiteboardModal()">Cancel</a>
+  </div>
+</div>
+<div id="editWhiteboardModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
+  <div class="modal-content" *ngIf="newWhiteboard">
+    <h4>Edit Whiteboard</h4>
+    <form materialize>
+      <div class="row">
+        <div class="s12 input-field">
+          <input placeholder="{{newWhiteboard.boardName}}" id="whiteboardName" type="text" [(ngModel)]="newWhiteboard.boardName"
+            name="whiteboardName">
+          <label for="whiteboardName">Name</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn-flat" (click)="editWhiteboard()">Edit</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeEditWhiteboardModal()">Cancel</a>
   </div>
 </div>
