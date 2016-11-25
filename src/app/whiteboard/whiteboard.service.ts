@@ -26,9 +26,9 @@ export class WhiteboardService {
             .then(response => response.json() as any[]);
     }
 
-    createStickyNote(userID, content, position, wbGroupID): Promise<any[]> {
-        var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID };
-
+    createStickyNote(userID, content, colorID, position, wbGroupID): Promise<any[]> {
+        var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID, 'colorID': colorID };
+        
         return this.http.post(this.baseUrl + this.createStickyNotePath, stickyNote)
             .toPromise()
             .then(response => response.json() as any[]);

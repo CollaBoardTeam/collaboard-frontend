@@ -73,7 +73,7 @@ export class WhiteboardComponent implements OnInit {
   }
 
   createStickyNote() {
-    this.whiteboardService.createStickyNote(1, this.newStickyNote["lineContent"], 1, this.whiteboardId).then(response => {
+    this.whiteboardService.createStickyNote(1, this.newStickyNote["lineContent"], this.newStickyNote["color"], 1, this.whiteboardId).then(response => {
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();
