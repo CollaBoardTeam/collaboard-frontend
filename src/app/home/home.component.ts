@@ -45,6 +45,12 @@ export class HomeComponent implements OnInit {
     this.closeCreateWhiteboardModal();
   }
 
+  deleteWhiteboard(wbID, userID) {
+    this.homeService.deleteWhiteboard(wbID, userID).then(response => {
+      this.loadWhiteboards();
+    });
+  }
+
   addParameter() {
     this.newWhiteboard.parameters.push({ value: "New Parameter" });
   }

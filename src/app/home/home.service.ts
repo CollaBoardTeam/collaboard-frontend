@@ -7,6 +7,7 @@ export class HomeService {
   baseUrl = "http://les16a.fe.up.pt/";
   getWhiteboardsPath = "public/wbs_by_user/";
   createWhiteboardPath = "private/create-wb/";
+  deleteWhiteboardPath = "private/delete-wb/";
 
   constructor(private http: Http) { }
 
@@ -20,6 +21,12 @@ export class HomeService {
     var whiteboard = { 'layoutID': layoutID, 'boardName': boardName, 'userID': userID };
 
     return this.http.post(this.baseUrl + this.createWhiteboardPath, whiteboard)
+      .toPromise()
+      .then(response => response.json() as any[]);
+  }
+
+  deleteWhiteboard(wbID, userID): Promise<any[]> {
+    return this.http.delete(this.baseUrl + this.deleteWhiteboardPath + wbID + "/" + userID)
       .toPromise()
       .then(response => response.json() as any[]);
   }
