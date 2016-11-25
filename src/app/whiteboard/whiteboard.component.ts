@@ -17,6 +17,7 @@ export class WhiteboardComponent implements OnInit {
   whiteboardContent = {};
   stickyNotesColors = [];
   newStickyNote = {};
+  newGroup = { id: '', name: '' };
   selectedStickyNote;
 
   constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService) {
@@ -63,6 +64,22 @@ export class WhiteboardComponent implements OnInit {
     $("#editStickyNoteModal").modal('close');
   }
 
+  openEditGroupNameModal(groupId, groupName) {
+    this.newGroup = { id: groupId, name: groupName };
+    $("#editGroupNameModal").modal('open');
+  }
+
+  closeEditGroupNameModal() {
+    $("#editGroupNameModal").modal('close');
+  }
+
+  editGroupName() {
+    this.whiteboardService.changeGroupName(this.newGroup.id, this.newGroup.name).then(response => {
+      this.loadStickyNotes();
+    });
+    this.closeEditGroupNameModal();
+  }
+
   openDeleteStickyNoteModal(stickyNote) {
     this.selectedStickyNote = stickyNote;
     $("#deleteStickyNoteModal").modal('open');
@@ -92,9 +109,9 @@ export class WhiteboardComponent implements OnInit {
     this.closeEditStickyNoteModal();
   }
 
-  getColorId(colorHex){
+  getColorId(colorHex) {
     var color = this.stickyNotesColors.find(color => color.color === colorHex);
-    if(color){
+    if (color) {
       return color["idColor"];
     }
     return -1;

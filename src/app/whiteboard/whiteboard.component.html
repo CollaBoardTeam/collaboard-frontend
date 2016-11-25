@@ -14,7 +14,10 @@
 </div>
 <div class="row">
   <div class="col s12 m6 l3" *ngFor="let group of whiteboardContent.whiteboardGroups">
-    <p>{{group.groupName}}</p>
+    <div class="row valign-wrapper">
+      <p class="col ">{{group.groupName}}</p>
+      <a class="waves-effect waves-light" (click)="openEditGroupNameModal(group.groupID, group.groupName)"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
+    </div>
     <div class="row card" *ngFor="let stickyNote of group.groupStickies">
       <div class="card-content" [ngStyle]="{'background-color': '#' + stickyNote.stickyColor}">
         <div class="right-align">
@@ -41,7 +44,8 @@
         <label>Color</label>
       </div>
       <div class="row">
-        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.stickyColor = color.color">
+        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}"
+          (click)="newStickyNote.stickyColor = color.color">
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
@@ -67,7 +71,8 @@
         <label>Color</label>
       </div>
       <div class="row">
-        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.stickyColor = color.color">
+        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}"
+          (click)="newStickyNote.stickyColor = color.color">
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
@@ -86,5 +91,22 @@
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="deleteStickyNote()">Delete</a>
     <a class="waves-effect waves-light btn-flat" (click)="closeDeleteStickyNoteModal()">Cancel</a>
+  </div>
+</div>
+<div id="editGroupNameModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
+  <div class="modal-content" *ngIf="newGroup">
+    <h4>Edit Group</h4>
+    <form materialize>
+      <div class="row">
+        <div class="s12 input-field">
+          <input placeholder="{{newGroup.name}}" id="groupName" type="text" [(ngModel)]="newGroup.name" name="groupName">
+          <label for="groupName">Name</label>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn-flat" (click)="editGroupName()">Edit</a>
+    <a class="waves-effect waves-light btn-flat" (click)="closeEditGroupNameModal()">Cancel</a>
   </div>
 </div>

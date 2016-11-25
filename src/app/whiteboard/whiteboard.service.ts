@@ -9,6 +9,7 @@ export class WhiteboardService {
     getColorsPath = "public/get-colors/";
     createStickyNotePath = "private/create-st/";
     editStickyNotePath = "private/edit-st/";
+    changeGroupNamePath = "private/change-group-name/";
     changeStickyNoteColorPath = "private/edit-st-color/";
     deleteStickyNotePath = "private/delete-st/";
 
@@ -45,6 +46,14 @@ export class WhiteboardService {
     changeStickyNoteColor(stickyNoteId, colorId): Promise<any[]> {
         var stickyNote = { 'snID': stickyNoteId, 'snColorID': colorId };
         return this.http.put(this.baseUrl + this.changeStickyNoteColorPath, stickyNote)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    changeGroupName(groupid, groupName): Promise<any[]> {
+        var group = { 'groupid': groupid, 'newname': groupName };
+
+        return this.http.put(this.baseUrl + this.changeGroupNamePath, group)
             .toPromise()
             .then(response => response.json() as any[]);
     }
