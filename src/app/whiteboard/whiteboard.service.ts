@@ -12,6 +12,7 @@ export class WhiteboardService {
     changeGroupNamePath = "private/change-group-name/";
     changeStickyNoteColorPath = "private/edit-st-color/";
     deleteStickyNotePath = "private/delete-st/";
+    deleteGroupPath = "private/delete-group/";
 
     constructor(private http: Http) { }
 
@@ -60,6 +61,12 @@ export class WhiteboardService {
 
     deleteStickyNote(stickyNoteId): Promise<any[]> {
         return this.http.delete(this.baseUrl + this.deleteStickyNotePath + stickyNoteId)
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    deleteGroup(groupId): Promise<any[]> {
+        return this.http.delete(this.baseUrl + this.deleteGroupPath + groupId)
             .toPromise()
             .then(response => response.json() as any[]);
     }

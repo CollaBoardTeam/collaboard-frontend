@@ -124,4 +124,10 @@ export class WhiteboardComponent implements OnInit {
     this.closeDeleteStickyNoteModal();
   }
 
+  deleteGroup(groupId) {
+    this.whiteboardService.deleteGroup(groupId).then(response => {
+      this.loadStickyNotes();
+    });
+  }
+
 }

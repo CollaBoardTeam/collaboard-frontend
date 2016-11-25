@@ -17,6 +17,7 @@
     <div class="row valign-wrapper">
       <p class="col ">{{group.groupName}}</p>
       <a class="waves-effect waves-light" (click)="openEditGroupNameModal(group.groupID, group.groupName)"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
+      <a class="waves-effect waves-light" (click)="deleteGroup(group.groupID)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
     </div>
     <div class="row card" *ngFor="let stickyNote of group.groupStickies">
       <div class="card-content" [ngStyle]="{'background-color': '#' + stickyNote.stickyColor}">
