@@ -27,11 +27,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  initializeTabs() {
+    $(document).ready(function () {
+      $('ul.tabs').tabs();
+    });
+  }
+
   openCreateWhiteboardModal() {
     this.newWhiteboard = { boardName: '', parameters: [] };
 
     $("#createWhiteboardModal").modal('open');
-    $('#createWhiteboardTabs').tabs('select_tab', 'tabStickyNote');
+    this.initializeTabs();
   }
 
   closeCreateWhiteboardModal() {
