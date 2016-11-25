@@ -3,7 +3,7 @@
     <div class="whiteboard-control light-blue lighten-2 nav-wrapper">
       <span>
         <a routerLink="/home" class="breadcrumb">My Whiteboards</a>
-        <a class="breadcrumb">LES 2016 - Team A</a>
+        <a class="breadcrumb">{{whiteboardContent.whiteboardName}}</a>
       </span>
       <ul class="right">
         <li><a class="waves-effect waves-light" (click)="openCreateStickyNoteModal()"><i class="material-icons">add</i></a></li>
@@ -13,14 +13,15 @@
   </nav>
 </div>
 <div class="row">
-  <div class="col s12 m6 l3" *ngFor="let stickyNote of stickyNotes">
-    <div class="card">
-      <div class="card-content" [ngStyle]="{'background-color': '#' + stickyNote.color}">
+  <div class="col s12 m6 l3" *ngFor="let group of whiteboardContent.whiteboardGroups">
+    <p>{{group.groupName}}</p>
+    <div class="row card" *ngFor="let stickyNote of group.groupStickies">
+      <div class="card-content" [ngStyle]="{'background-color': '#' + stickyNote.stickyColor}">
         <div class="right-align">
           <a class="waves-effect waves-light" (click)="openEditStickyNoteModal(stickyNote)"><i class="material-icons black-text">edit</i></a>
           <a class="waves-effect waves-light" (click)="openDeleteStickyNoteModal(stickyNote)"><i class="material-icons black-text">delete</i></a>
         </div>
-        <p>{{stickyNote.lineContent}}</p>
+        <p>{{stickyNote.stickyContent}}</p>
         <p *ngFor="let param of stickyNote.parameters">{{param.name}} {{param.value}}</p>
       </div>
     </div>
@@ -32,7 +33,7 @@
     <form materialize>
       <div class="row">
         <div class="s12 input-field">
-          <input id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.lineContent" name="stickyNoteName">
+          <input id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.stickyContent" name="stickyNoteName">
           <label for="stickyNoteName">Name</label>
         </div>
       </div>
@@ -40,8 +41,8 @@
         <label>Color</label>
       </div>
       <div class="row">
-        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.color = color.color">
-          <i class="material-icons black-text" *ngIf="newStickyNote.color === color.color">done</i>
+        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.stickyColor = color.color">
+          <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
     </form>
@@ -57,7 +58,7 @@
     <form materialize>
       <div class="row">
         <div class="s12 input-field">
-          <input placeholder="{{newStickyNote.lineContent}}" id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.lineContent"
+          <input placeholder="{{newStickyNote.stickyContent}}" id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.stickyContent"
             name="stickyNoteName">
           <label for="stickyNoteName">Name</label>
         </div>
@@ -66,8 +67,8 @@
         <label>Color</label>
       </div>
       <div class="row">
-        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.color = color.color">
-          <i class="material-icons black-text" *ngIf="newStickyNote.color === color.color">done</i>
+        <a class="btn-floating btn-colors waves-effect waves-light" *ngFor="let color of stickyNotesColors" [ngStyle]="{'background-color': '#'+color.color}" (click)="newStickyNote.stickyColor = color.color">
+          <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
     </form>
@@ -80,7 +81,7 @@
 <div id="deleteStickyNoteModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
   <div class="modal-content" *ngIf="selectedStickyNote">
     <h4>Delete Sticky Note</h4>
-    <p>Are you sure you want to delete sticky note <b>{{selectedStickyNote.lineContent}}</b>?</p>
+    <p>Are you sure you want to delete sticky note <b>{{selectedStickyNote.stickyContent}}</b>?</p>
   </div>
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="deleteStickyNote()">Delete</a>
