@@ -12,7 +12,7 @@ declare var $: any;
 export class HomeComponent implements OnInit {
 
   whiteboards = [];
-  newWhiteboard = { boardName: '', parameters: [] };
+  newWhiteboard = { boardName: '', parameters: [], groups: [] };
 
   constructor(private homeService: HomeService) {
   }
@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
   }
 
   openCreateWhiteboardModal() {
-    this.newWhiteboard = { boardName: '', parameters: [] };
+    this.newWhiteboard = { boardName: '', parameters: [], groups: [] };
 
     $("#createWhiteboardModal").modal('open');
     this.initializeTabs();
@@ -56,6 +56,12 @@ export class HomeComponent implements OnInit {
 
   createWhiteboard() {
     this.homeService.createWhiteboard(1, this.newWhiteboard.boardName, 1).then(response => {
+      var wbId = response["message"][0].idWhiteBoard;
+
+      for (let group of this.newWhiteboard.groups) {
+        this.homeService.addGroupToWhiteboard(wbId, group.value);
+      }
+
       this.loadWhiteboards();
     });
     this.closeCreateWhiteboardModal();
@@ -80,6 +86,14 @@ export class HomeComponent implements OnInit {
 
   deleteParameter(index: number) {
     this.newWhiteboard.parameters.splice(index, 1);
+  }
+
+  addGroup() {
+    this.newWhiteboard.groups.push({ value: "New Group" });
+  }
+
+  deleteGroup(index: number) {
+    this.newWhiteboard.groups.splice(index, 1);
   }
 
 }

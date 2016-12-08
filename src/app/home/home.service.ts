@@ -8,6 +8,7 @@ export class HomeService {
 
   getWhiteboardsPath = "public/wbs_by_user/";
   createWhiteboardPath = "private/create-wb/";
+  addGroupPath = "private/add-group-wb/";
   editWhiteboardPath = "private/change-wb-name/";
   deleteWhiteboardPath = "private/delete-wb/";
 
@@ -23,6 +24,14 @@ export class HomeService {
     var whiteboard = { 'layoutID': layoutID, 'boardName': boardName, 'userID': userID };
 
     return this.http.post(CollaboardAPI.url + this.createWhiteboardPath, whiteboard)
+      .toPromise()
+      .then(response => response.json() as any[]);
+  }
+
+  addGroupToWhiteboard(wbID, groupName): Promise<any[]> {
+    var group = { 'wbid': wbID, 'groupname': groupName };
+
+    return this.http.post(CollaboardAPI.url + this.addGroupPath, group)
       .toPromise()
       .then(response => response.json() as any[]);
   }
