@@ -15,7 +15,8 @@
     <div class="card">
       <div class="card-content">
         <div class="right-align" *ngIf="whiteboard.description === 'owner'">
-          <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">lock_open</i></a>
+          <a class="waves-effect waves-light" *ngIf="whiteboard.locked === 0"><i class="material-icons light-blue-text text-lighten-2">lock_open</i></a>
+          <a class="waves-effect waves-light" *ngIf="whiteboard.locked === 1"><i class="material-icons light-blue-text text-lighten-2">lock_outline</i></a>
           <a class="waves-effect waves-light" (click)="openEditWhiteboardModal(whiteboard)"><i class="material-icons light-blue-text text-lighten-2">settings</i></a>
           <a class="waves-effect waves-light" (click)="deleteWhiteboard(whiteboard.idWhiteBoard,1)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
