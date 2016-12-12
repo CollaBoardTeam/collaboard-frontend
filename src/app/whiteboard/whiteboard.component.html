@@ -63,6 +63,13 @@
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
+      <!-- Dropdown Trigger -->
+      <a class='dropdown-button btn' data-activates='groups-dropdown'>Change group</a>
+
+      <!-- Dropdown Structure -->
+      <ul id='groups-dropdown' class='dropdown-content'>
+        <li *ngFor="let group of whiteboardContent.whiteboardGroups"><a (click)="newStickyNote.groupID = group.groupID">{{group.groupName}}</a></li>
+      </ul>
     </form>
   </div>
   <div class="modal-footer">

@@ -99,13 +99,15 @@ export class WhiteboardComponent implements OnInit {
 
   editStickyNote() {
     this.whiteboardService.editStickyNote(this.newStickyNote["stickyId"], this.newStickyNote["indexLine"]).then(response => {
-      if (this.newStickyNote["oldColor"] !== this.newStickyNote["stickyColor"]) {
-        this.whiteboardService.changeStickyNoteColor(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"])).then(response => {
+      this.whiteboardService.changeStickyNoteGroup(this.newStickyNote["stickyId"], this.newStickyNote["groupID"]).then(response => {
+        if (this.newStickyNote["oldColor"] !== this.newStickyNote["stickyColor"]) {
+          this.whiteboardService.changeStickyNoteColor(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"])).then(response => {
+            this.loadStickyNotes();
+          });
+        } else {
           this.loadStickyNotes();
-        });
-      } else {
-        this.loadStickyNotes();
-      }
+        }
+      });
     });
     this.closeEditStickyNoteModal();
   }
