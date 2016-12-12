@@ -25,8 +25,7 @@
           <a class="waves-effect waves-light" (click)="openEditStickyNoteModal(stickyNote)"><i class="material-icons black-text">edit</i></a>
           <a class="waves-effect waves-light" (click)="openDeleteStickyNoteModal(stickyNote)"><i class="material-icons black-text">delete</i></a>
         </div>
-        <p>{{stickyNote.stickyContent}}</p>
-        <p *ngFor="let param of stickyNote.parameters">{{param.name}} {{param.value}}</p>
+        <p *ngFor="let line of stickyNote.groupLines">{{line.stickyContent}}</p>
       </div>
     </div>
   </div>
@@ -35,12 +34,6 @@
   <div class="modal-content">
     <h4>Create Sticky Note</h4>
     <form materialize>
-      <div class="row">
-        <div class="s12 input-field">
-          <input id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.stickyContent" name="stickyNoteName">
-          <label for="stickyNoteName">Name</label>
-        </div>
-      </div>
       <div class="row">
         <label>Color</label>
       </div>
@@ -62,13 +55,6 @@
     <h4>Edit Sticky Note</h4>
     <form materialize>
       <div class="row">
-        <div class="s12 input-field">
-          <input placeholder="{{newStickyNote.stickyContent}}" id="stickyNoteName" type="text" [(ngModel)]="newStickyNote.stickyContent"
-            name="stickyNoteName">
-          <label for="stickyNoteName">Name</label>
-        </div>
-      </div>
-      <div class="row">
         <label>Color</label>
       </div>
       <div class="row">
@@ -87,7 +73,7 @@
 <div id="deleteStickyNoteModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
   <div class="modal-content" *ngIf="selectedStickyNote">
     <h4>Delete Sticky Note</h4>
-    <p>Are you sure you want to delete sticky note <b>{{selectedStickyNote.stickyContent}}</b>?</p>
+    <p>Are you sure you want to delete sticky note?</p>
   </div>
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="deleteStickyNote()">Delete</a>

@@ -28,16 +28,47 @@ export class WhiteboardService {
             .then(response => response.json() as any[]);
     }
 
-    createStickyNote(userID, content, colorID, position, wbGroupID): Promise<any[]> {
-        var stickyNote = { 'userID': userID, 'content': content, 'position': position, 'wbGroupID': wbGroupID, 'colorID': colorID };
+    createStickyNote(userID, colorID, position, wbGroupID): Promise<any[]> {
+        var stickyNote = {
+            "userid": userID,
+            "wbGroupID": wbGroupID,
+            "colorID": colorID,
+            "stickypositon": position,
+            "stickylines": [{
+                "lineContent": "1",
+                "linePosition": 1
+            },
+            {
+                "lineContent": "2",
+                "linePosition": 2
+            },
+            {
+                "lineContent": "3",
+                "linePosition": 3
+            }
+            ]
+        };
 
         return this.http.post(CollaboardAPI.url + this.createStickyNotePath, stickyNote)
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
-    editStickyNote(stickyNoteId, content, indexLine): Promise<any[]> {
-        var stickyNote = { 'snID': stickyNoteId, 'contentLine': content, 'lineID': indexLine };
+    editStickyNote(stickyNoteId, indexLine): Promise<any[]> {
+        var stickyNote = {
+            "stickyid": stickyNoteId,
+            "stickypositon": 1,
+            "stickylines": [{
+                "lineContent": "mudei",
+                "lineID": 1
+            }, {
+                "lineContent": "isto",
+                "lineID": 2
+            }, {
+                "lineContent": "ou nao",
+                "lineID": 3
+            }]
+        }
 
         return this.http.put(CollaboardAPI.url + this.editStickyNotePath, stickyNote)
             .toPromise()

@@ -34,6 +34,7 @@ export class WhiteboardComponent implements OnInit {
   loadStickyNotes() {
     this.whiteboardService.getStickyNotes(this.whiteboardId).then(response => {
       this.whiteboardContent = response['message'];
+      console.log(this.whiteboardContent);
     });
   }
 
@@ -90,14 +91,14 @@ export class WhiteboardComponent implements OnInit {
   }
 
   createStickyNote() {
-    this.whiteboardService.createStickyNote(1, this.newStickyNote["stickyContent"], this.getColorId(this.newStickyNote["stickyColor"]), 1, this.whiteboardId).then(response => {
+    this.whiteboardService.createStickyNote(1, this.getColorId(this.newStickyNote["stickyColor"]), 1, this.whiteboardId).then(response => {
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();
   }
 
   editStickyNote() {
-    this.whiteboardService.editStickyNote(this.newStickyNote["stickyId"], this.newStickyNote["stickyContent"], this.newStickyNote["indexLine"]).then(response => {
+    this.whiteboardService.editStickyNote(this.newStickyNote["stickyId"], this.newStickyNote["indexLine"]).then(response => {
       if (this.newStickyNote["oldColor"] !== this.newStickyNote["stickyColor"]) {
         this.whiteboardService.changeStickyNoteColor(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"])).then(response => {
           this.loadStickyNotes();
