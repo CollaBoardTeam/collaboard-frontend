@@ -11,6 +11,7 @@ export class HomeService {
   addGroupPath = "private/add-group-wb/";
   editWhiteboardPath = "private/change-wb-name/";
   deleteWhiteboardPath = "private/delete-wb/";
+  lockUnlockWhiteboardPath = "private/change-wb-state";
 
   constructor(private http: Http) { }
 
@@ -46,6 +47,14 @@ export class HomeService {
 
   deleteWhiteboard(wbID, userID): Promise<any[]> {
     return this.http.delete(CollaboardAPI.url + this.deleteWhiteboardPath + wbID + "/" + userID)
+      .toPromise()
+      .then(response => response.json() as any[]);
+  }
+
+  lockOrUnlockWhiteboard(wbID): Promise<any[]> {
+    var whiteboard = { 'wbid': wbID };
+
+    return this.http.put(CollaboardAPI.url + this.lockUnlockWhiteboardPath, whiteboard)
       .toPromise()
       .then(response => response.json() as any[]);
   }

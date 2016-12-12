@@ -80,6 +80,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  lockOrUnlockWhiteboard(wbID) {
+    this.homeService.lockOrUnlockWhiteboard(wbID).then(response => {
+      this.loadWhiteboards();
+    });
+  }
+
   addParameter() {
     this.newWhiteboard.parameters.push({ value: "New Parameter" });
   }
