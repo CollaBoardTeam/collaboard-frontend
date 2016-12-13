@@ -55,20 +55,12 @@ export class WhiteboardService {
             .then(response => response.json() as any[]);
     }
 
-    editStickyNote(stickyNoteId, indexLine): Promise<any[]> {
+    editStickyNote(stickyNoteId, colorID, stickylines): Promise<any[]> {
         var stickyNote = {
             "stickyid": stickyNoteId,
+            "colorID": colorID,
             "stickypositon": 1,
-            "stickylines": [{
-                "lineContent": "mudei",
-                "lineID": 1
-            }, {
-                "lineContent": "isto",
-                "lineID": 2
-            }, {
-                "lineContent": "ou nao",
-                "lineID": 3
-            }]
+            "stickylines": stickylines
         }
 
         return this.http.put(CollaboardAPI.url + this.editStickyNotePath, stickyNote)

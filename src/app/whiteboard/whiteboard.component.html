@@ -55,6 +55,15 @@
     <h4>Edit Sticky Note</h4>
     <form materialize>
       <div class="row">
+        <ul class="collection" *ngFor="let line of newStickyNote.groupLines">
+          <li class="collection-item valign-wrapper">
+            <div class="col s12">
+              <input id="line{{line.lineIndex}}" type="text" [(ngModel)]="line.stickyContent" name="line{{line.lineIndex}}">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
         <label>Color</label>
       </div>
       <div class="row">
@@ -63,10 +72,7 @@
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
-      <!-- Dropdown Trigger -->
       <a class='dropdown-button btn' data-activates='groups-dropdown'>Change group</a>
-
-      <!-- Dropdown Structure -->
       <ul id='groups-dropdown' class='dropdown-content'>
         <li *ngFor="let group of whiteboardContent.whiteboardGroups"><a (click)="newStickyNote.groupID = group.groupID">{{group.groupName}}</a></li>
       </ul>

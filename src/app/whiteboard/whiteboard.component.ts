@@ -34,7 +34,6 @@ export class WhiteboardComponent implements OnInit {
   loadStickyNotes() {
     this.whiteboardService.getStickyNotes(this.whiteboardId).then(response => {
       this.whiteboardContent = response['message'];
-      console.log(this.whiteboardContent);
     });
   }
 
@@ -56,7 +55,7 @@ export class WhiteboardComponent implements OnInit {
   }
 
   openEditStickyNoteModal(stickyNote) {
-    this.newStickyNote = Object.assign({}, stickyNote);
+    this.newStickyNote = JSON.parse(JSON.stringify(stickyNote));
     this.newStickyNote["oldColor"] = this.newStickyNote["stickyColor"];
     $("#editStickyNoteModal").modal('open');
   }
@@ -98,7 +97,15 @@ export class WhiteboardComponent implements OnInit {
   }
 
   editStickyNote() {
-    this.whiteboardService.editStickyNote(this.newStickyNote["stickyId"], this.newStickyNote["indexLine"]).then(response => {
+    var groupLines = this.newStickyNote["groupLines"];
+    groupLines.forEach(function (line) {
+      line.lineContent = line.stickyContent;
+      delete line.stickyContent;
+      line.lineID = line.lineId;
+      delete line.lineId;
+      delete line.lineIndex;
+    });
+    this.whiteboardService.editStickyNote(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"]), groupLines).then(response => {
       this.whiteboardService.changeStickyNoteGroup(this.newStickyNote["stickyId"], this.newStickyNote["groupID"]).then(response => {
         if (this.newStickyNote["oldColor"] !== this.newStickyNote["stickyColor"]) {
           this.whiteboardService.changeStickyNoteColor(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"])).then(response => {
