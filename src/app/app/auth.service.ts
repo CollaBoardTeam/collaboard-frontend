@@ -6,7 +6,8 @@ import { CollaboardAPI } from '../api.config';
 export class AuthService {
     private key = "collaboard_user";
 
-    authenticatePath = "user/authenticate";
+    authenticatePath = "user/authenticate/";
+    registerPath = "user/create-user/";
 
     constructor(private http: Http) {
     }
@@ -19,7 +20,7 @@ export class AuthService {
                 response = response.json();
                 if (response["error"] === false) {
                     var user = {
-                        "idUser": response["message"][0]["idUser"],
+                        "id": response["message"][0]["idUser"],
                         "fullName": response["message"][0]["fullName"],
                         "email": email,
                         "token": response["token"]
@@ -27,6 +28,13 @@ export class AuthService {
                     localStorage.setItem(this.key, JSON.stringify(user));
                 }
             });
+    }
+
+    register(fullname, email, password) {
+        var credentials = { 'fullname': fullname, 'email': email, 'password': password };
+        return this.http.post(CollaboardAPI.url + this.registerPath, credentials)
+            .toPromise()
+            .then(response => response.json() as any[]);
     }
 
     logout() {

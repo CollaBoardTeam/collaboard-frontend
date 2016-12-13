@@ -1,30 +1,38 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { CollaboardAPI } from '../api.config';
+import { AuthService } from '../app/auth.service';
 
 @Injectable()
 export class WhiteboardService {
 
-    getStickyNotesPath = "public/get_wb_content/";
-    getColorsPath = "public/get-colors/";
-    createStickyNotePath = "private/create-st/";
-    editStickyNotePath = "private/edit-st/";
-    changeGroupNamePath = "private/change-group-name/";
-    changeStickyNoteColorPath = "private/edit-st-color/";
-    changeStickyNoteGroupPath = "private/add-sticky-toGroup/";
-    deleteStickyNotePath = "private/delete-st/";
-    deleteGroupPath = "private/delete-group/";
+    user;
+    headers;
 
-    constructor(private http: Http) { }
+    getStickyNotesPath = "whiteboard/get-wb-content/";
+    getColorsPath = "utility/get-colors/";
+    createStickyNotePath = "stickynote/create-st/";
+    editStickyNotePath = "stickynote/edit-st/";
+    changeGroupNamePath = "group/change-group-name/";
+    changeStickyNoteColorPath = "stickynote/edit-st-color/";
+    changeStickyNoteGroupPath = "stickynote/add-sticky-toGroup/";
+    deleteStickyNotePath = "stickynote/delete-st/";
+    deleteGroupPath = "group/delete-group/";
+
+    constructor(private http: Http, private authService: AuthService) {
+        this.user = this.authService.getUser();
+        this.headers = new Headers();
+        this.headers.append("x-access-token", this.user.token);
+    }
 
     getStickyNotes(id: number): Promise<any[]> {
-        return this.http.get(CollaboardAPI.url + this.getStickyNotesPath + id)
+        return this.http.get(CollaboardAPI.url + this.getStickyNotesPath + id, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
     getColors(): Promise<any[]> {
-        return this.http.get(CollaboardAPI.url + this.getColorsPath)
+        return this.http.get(CollaboardAPI.url + this.getColorsPath, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
@@ -50,7 +58,7 @@ export class WhiteboardService {
             ]
         };
 
-        return this.http.post(CollaboardAPI.url + this.createStickyNotePath, stickyNote)
+        return this.http.post(CollaboardAPI.url + this.createStickyNotePath, stickyNote, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
@@ -63,21 +71,21 @@ export class WhiteboardService {
             "stickylines": stickylines
         }
 
-        return this.http.put(CollaboardAPI.url + this.editStickyNotePath, stickyNote)
+        return this.http.put(CollaboardAPI.url + this.editStickyNotePath, stickyNote, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
     changeStickyNoteColor(stickyNoteId, colorId): Promise<any[]> {
         var stickyNote = { 'snID': stickyNoteId, 'snColorID': colorId };
-        return this.http.put(CollaboardAPI.url + this.changeStickyNoteColorPath, stickyNote)
+        return this.http.put(CollaboardAPI.url + this.changeStickyNoteColorPath, stickyNote, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
     changeStickyNoteGroup(stickyNoteId, groupId): Promise<any[]> {
         var stickyNote = { 'stickyid': stickyNoteId, 'groupid': groupId };
-        return this.http.put(CollaboardAPI.url + this.changeStickyNoteGroupPath, stickyNote)
+        return this.http.put(CollaboardAPI.url + this.changeStickyNoteGroupPath, stickyNote, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
@@ -85,19 +93,19 @@ export class WhiteboardService {
     changeGroupName(groupid, groupName): Promise<any[]> {
         var group = { 'groupid': groupid, 'newname': groupName };
 
-        return this.http.put(CollaboardAPI.url + this.changeGroupNamePath, group)
+        return this.http.put(CollaboardAPI.url + this.changeGroupNamePath, group, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
     deleteStickyNote(stickyNoteId): Promise<any[]> {
-        return this.http.delete(CollaboardAPI.url + this.deleteStickyNotePath + stickyNoteId)
+        return this.http.delete(CollaboardAPI.url + this.deleteStickyNotePath + stickyNoteId, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
 
     deleteGroup(groupId): Promise<any[]> {
-        return this.http.delete(CollaboardAPI.url + this.deleteGroupPath + groupId)
+        return this.http.delete(CollaboardAPI.url + this.deleteGroupPath + groupId, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }

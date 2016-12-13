@@ -1,30 +1,37 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { CollaboardAPI } from '../api.config';
-
+import { AuthService } from '../app/auth.service';
 
 @Injectable()
 export class HomeService {
 
-  getWhiteboardsPath = "public/wbs_by_user/";
-  createWhiteboardPath = "private/create-wb/";
-  addGroupPath = "private/add-group-wb/";
-  editWhiteboardPath = "private/change-wb-name/";
-  deleteWhiteboardPath = "private/delete-wb/";
-  lockUnlockWhiteboardPath = "private/change-wb-state";
+  user;
+  headers;
 
-  constructor(private http: Http) { }
+  getWhiteboardsPath = "whiteboard/wbs-by-user/";
+  createWhiteboardPath = "whiteboard/create-wb/";
+  addGroupPath = "group/add-group-wb/";
+  editWhiteboardPath = "whiteboard/change-wb-name/";
+  deleteWhiteboardPath = "whiteboard/delete-wb/";
+  lockUnlockWhiteboardPath = "whiteboard/change-wb-state";
+
+  constructor(private http: Http, private authService: AuthService) {
+    this.user = this.authService.getUser();
+    this.headers = new Headers();
+    this.headers.append("x-access-token", this.user.token);
+  }
 
   getWhiteboards(): Promise<any[]> {
-    return this.http.get(CollaboardAPI.url + this.getWhiteboardsPath + 1)
+    return this.http.get(CollaboardAPI.url + this.getWhiteboardsPath + this.user.id, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }
 
-  createWhiteboard(layoutID, boardName, userID): Promise<any[]> {
-    var whiteboard = { 'layoutID': layoutID, 'boardName': boardName, 'userID': userID };
+  createWhiteboard(layoutID, boardName): Promise<any[]> {
+    var whiteboard = { 'layoutID': layoutID, 'boardName': boardName, 'userID': this.user.id };
 
-    return this.http.post(CollaboardAPI.url + this.createWhiteboardPath, whiteboard)
+    return this.http.post(CollaboardAPI.url + this.createWhiteboardPath, whiteboard, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }
@@ -32,7 +39,7 @@ export class HomeService {
   addGroupToWhiteboard(wbID, groupName): Promise<any[]> {
     var group = { 'wbid': wbID, 'groupname': groupName };
 
-    return this.http.post(CollaboardAPI.url + this.addGroupPath, group)
+    return this.http.post(CollaboardAPI.url + this.addGroupPath, group, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }
@@ -40,13 +47,13 @@ export class HomeService {
   editWhiteboard(wbID, boardName): Promise<any[]> {
     var whiteboard = { 'wbid': wbID, 'boardName': boardName, 'newname': boardName };
 
-    return this.http.put(CollaboardAPI.url + this.editWhiteboardPath, whiteboard)
+    return this.http.put(CollaboardAPI.url + this.editWhiteboardPath, whiteboard, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }
 
-  deleteWhiteboard(wbID, userID): Promise<any[]> {
-    return this.http.delete(CollaboardAPI.url + this.deleteWhiteboardPath + wbID + "/" + userID)
+  deleteWhiteboard(wbID): Promise<any[]> {
+    return this.http.delete(CollaboardAPI.url + this.deleteWhiteboardPath + wbID + "/" + this.user.id, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }
@@ -54,7 +61,7 @@ export class HomeService {
   lockOrUnlockWhiteboard(wbID): Promise<any[]> {
     var whiteboard = { 'wbid': wbID };
 
-    return this.http.put(CollaboardAPI.url + this.lockUnlockWhiteboardPath, whiteboard)
+    return this.http.put(CollaboardAPI.url + this.lockUnlockWhiteboardPath, whiteboard, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }

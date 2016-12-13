@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
   }
 
   createWhiteboard() {
-    this.homeService.createWhiteboard(1, this.newWhiteboard.boardName, 1).then(response => {
+    this.homeService.createWhiteboard(1, this.newWhiteboard.boardName).then(response => {
       var wbId = response["message"][0].idWhiteBoard;
 
       for (let group of this.newWhiteboard.groups) {
@@ -74,8 +74,8 @@ export class HomeComponent implements OnInit {
     this.closeEditWhiteboardModal();
   }
 
-  deleteWhiteboard(wbID, userID) {
-    this.homeService.deleteWhiteboard(wbID, userID).then(response => {
+  deleteWhiteboard(wbID) {
+    this.homeService.deleteWhiteboard(wbID).then(response => {
       this.loadWhiteboards();
     });
   }

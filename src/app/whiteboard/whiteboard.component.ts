@@ -33,7 +33,7 @@ export class WhiteboardComponent implements OnInit {
 
   loadStickyNotes() {
     this.whiteboardService.getStickyNotes(this.whiteboardId).then(response => {
-      this.whiteboardContent = response['message'];
+      this.whiteboardContent = JSON.parse(response['message'][0]['result']);
     });
   }
 
