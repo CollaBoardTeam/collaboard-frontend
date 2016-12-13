@@ -1,3 +1,3 @@
 export var CollaboardAPI = {
-    url: "http://les16a.fe.up.pt/"
+    url: "http://les16a.fe.up.pt/api/"
 };
