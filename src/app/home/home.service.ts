@@ -15,6 +15,8 @@ export class HomeService {
   editWhiteboardPath = "whiteboard/change-wb-name/";
   deleteWhiteboardPath = "whiteboard/delete-wb/";
   lockUnlockWhiteboardPath = "whiteboard/change-wb-state";
+  createWhiteboardLayoutPath = "layout/create-wb-layout/";
+  setWhiteboardLayoutPath = "whiteboard/set-wb-layout/";
 
   constructor(private http: Http, private authService: AuthService) {
     this.user = this.authService.getUser();
@@ -62,6 +64,26 @@ export class HomeService {
     var whiteboard = { 'wbid': wbID };
 
     return this.http.put(CollaboardAPI.url + this.lockUnlockWhiteboardPath, whiteboard, { headers: this.headers })
+      .toPromise()
+      .then(response => response.json() as any[]);
+  }
+
+  createWhiteboardLayout(wbID, boardName, subtitles): Promise<any[]> {
+    var layout = {
+      "layoutname": "layout-" + boardName,
+      "wbid": wbID,
+      "subtitles": subtitles
+    };
+
+    return this.http.post(CollaboardAPI.url + this.createWhiteboardLayoutPath, layout, { headers: this.headers })
+      .toPromise()
+      .then(response => response.json() as any[]);
+  }
+
+  addLayoutToWhiteboard(wbid, layoutid): Promise<any[]> {
+    var whiteboardLayout = { 'wbid': wbid, 'layoutid': layoutid };
+
+    return this.http.put(CollaboardAPI.url + this.setWhiteboardLayoutPath, whiteboardLayout, { headers: this.headers })
       .toPromise()
       .then(response => response.json() as any[]);
   }

@@ -62,6 +62,22 @@ export class HomeComponent implements OnInit {
         this.homeService.addGroupToWhiteboard(wbId, group.value);
       }
 
+      var subtitles = [];
+      var i = 1;
+
+      for (let parameter of this.newWhiteboard.parameters) {
+        subtitles.push({
+          "lineIndex": i,
+          "subtitle": parameter.value
+        });
+        i++;
+      }
+
+      this.homeService.createWhiteboardLayout(wbId, response["message"][0]["boardName"], subtitles).then(response => {
+        this.homeService.addLayoutToWhiteboard(wbId, response["message"][0]["idLayout"]).then(response => {
+        });
+      });
+
       this.loadWhiteboards();
     });
     this.closeCreateWhiteboardModal();

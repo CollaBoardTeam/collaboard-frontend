@@ -18,6 +18,7 @@ export class WhiteboardService {
     changeStickyNoteGroupPath = "stickynote/add-sticky-toGroup/";
     deleteStickyNotePath = "stickynote/delete-st/";
     deleteGroupPath = "group/delete-group/";
+    getWhiteboardLayoutPath = "layout/get-layouts/";
 
     constructor(private http: Http, private authService: AuthService) {
         this.user = this.authService.getUser();
@@ -106,6 +107,12 @@ export class WhiteboardService {
 
     deleteGroup(groupId): Promise<any[]> {
         return this.http.delete(CollaboardAPI.url + this.deleteGroupPath + groupId, { headers: this.headers })
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    getWhiteboardLayout(id: number): Promise<any[]> {
+        return this.http.get(CollaboardAPI.url + this.getWhiteboardLayoutPath + id, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
