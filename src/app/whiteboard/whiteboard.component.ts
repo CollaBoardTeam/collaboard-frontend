@@ -14,10 +14,10 @@ declare var $: any;
 export class WhiteboardComponent implements OnInit {
 
   whiteboardId;
-  whiteboardLayout;
+  whiteboardLayout = [];
   whiteboardContent = {};
   stickyNotesColors = [];
-  newStickyNote = {};
+  newStickyNote = { stickylines: [] };
   newGroup = { id: '', name: '' };
   selectedStickyNote;
 
@@ -36,9 +36,10 @@ export class WhiteboardComponent implements OnInit {
     this.whiteboardService.getStickyNotes(this.whiteboardId).then(response => {
       this.whiteboardContent = JSON.parse(response['message'][0]['result']);
 
+      console.log(JSON.stringify(this.whiteboardContent));
+
       this.whiteboardService.getWhiteboardLayout(this.whiteboardContent["whiteboardLayoutID"]).then(response => {
         this.whiteboardLayout = response['message'];
-        console.log(this.whiteboardLayout);
       });
     });
   }
@@ -50,7 +51,7 @@ export class WhiteboardComponent implements OnInit {
   }
 
   openCreateStickyNoteModal() {
-    this.newStickyNote = {};
+    this.newStickyNote = { stickylines: [] };
     this.newStickyNote["stickyColor"] = this.stickyNotesColors[0].color;
 
     $("#createStickyNoteModal").modal('open');
@@ -62,6 +63,7 @@ export class WhiteboardComponent implements OnInit {
 
   openEditStickyNoteModal(stickyNote) {
     this.newStickyNote = JSON.parse(JSON.stringify(stickyNote));
+    this.newStickyNote.stickylines = [];
     this.newStickyNote["oldColor"] = this.newStickyNote["stickyColor"];
     $("#editStickyNoteModal").modal('open');
   }
@@ -96,7 +98,17 @@ export class WhiteboardComponent implements OnInit {
   }
 
   createStickyNote() {
-    this.whiteboardService.createStickyNote(1, this.getColorId(this.newStickyNote["stickyColor"]), 1, this.whiteboardId).then(response => {
+    var lines = [];
+    var i = 1;
+    this.newStickyNote.stickylines.forEach(function (line) {
+      lines.push(
+        {
+          "lineContent": line,
+          "linePosition": i
+        });
+      i++;
+    });
+    this.whiteboardService.createStickyNote(this.getColorId(this.newStickyNote["stickyColor"]), 1, this.whiteboardId, lines).then(response => {
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();

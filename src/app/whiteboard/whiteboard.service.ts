@@ -38,26 +38,16 @@ export class WhiteboardService {
             .then(response => response.json() as any[]);
     }
 
-    createStickyNote(userID, colorID, position, wbGroupID): Promise<any[]> {
+    createStickyNote(colorID, position, wbGroupID, stickylines): Promise<any[]> {
         var stickyNote = {
-            "userid": userID,
+            "userid": this.user.id,
             "wbGroupID": wbGroupID,
             "colorID": colorID,
             "stickypositon": position,
-            "stickylines": [{
-                "lineContent": "1",
-                "linePosition": 1
-            },
-            {
-                "lineContent": "2",
-                "linePosition": 2
-            },
-            {
-                "lineContent": "3",
-                "linePosition": 3
-            }
-            ]
+            "stickylines": stickylines
         };
+
+        console.log(JSON.stringify(stickyNote));
 
         return this.http.post(CollaboardAPI.url + this.createStickyNotePath, stickyNote, { headers: this.headers })
             .toPromise()

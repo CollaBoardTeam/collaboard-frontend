@@ -36,6 +36,16 @@
     <h4>Create Sticky Note</h4>
     <form materialize>
       <div class="row">
+        <ul class="collection" *ngFor="let line of whiteboardLayout">
+          <li class="collection-item valign-wrapper">
+            <p class="col">{{line.lineLegend}}</p>
+            <div class="col s11">
+              <input id="line{{line.indexLine}}" type="text" [(ngModel)]="newStickyNote.stickylines[line.indexLine-1]" name="line{{line.indexLine}}">
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="row">
         <label>Color</label>
       </div>
       <div class="row">
@@ -58,6 +68,7 @@
       <div class="row">
         <ul class="collection" *ngFor="let line of newStickyNote.groupLines">
           <li class="collection-item valign-wrapper">
+            <p class="col">{{line.lineLegend}}</p>
             <div class="col s12">
               <input id="line{{line.lineIndex}}" type="text" [(ngModel)]="line.stickyContent" name="line{{line.lineIndex}}">
             </div>
@@ -73,10 +84,16 @@
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
+      <!--
       <a class='dropdown-button btn' data-activates='groups-dropdown'>Change group</a>
       <ul id='groups-dropdown' class='dropdown-content'>
         <li *ngFor="let group of whiteboardContent.whiteboardGroups"><a (click)="newStickyNote.groupID = group.groupID">{{group.groupName}}</a></li>
       </ul>
+      -->
+      <p *ngFor="let group of whiteboardContent.whiteboardGroups">
+        <input name="group" type="radio" id="{{group.groupID}}" (click)="newStickyNote.groupID = group.groupID"/>
+        <label attr.for="{{group.groupID}}">{{group.groupName}}</label>
+      </p>
     </form>
   </div>
   <div class="modal-footer">
