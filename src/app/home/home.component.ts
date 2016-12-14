@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from './home.service';
+import { ToolbarService } from '../toolbar/toolbar.service';
 
 declare var $: any;
 
@@ -7,14 +8,14 @@ declare var $: any;
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [HomeService]
+  providers: [HomeService, ToolbarService]
 })
 export class HomeComponent implements OnInit {
 
   whiteboards = [];
-  newWhiteboard = { boardName: '', parameters: [], groups: [] };
+  newWhiteboard = { boardName: '', parameters: [], groups: [], members: [] };
 
-  constructor(private homeService: HomeService) {
+  constructor(private homeService: HomeService, private toolbarService: ToolbarService) {
   }
 
   ngOnInit() {
@@ -34,7 +35,7 @@ export class HomeComponent implements OnInit {
   }
 
   openCreateWhiteboardModal() {
-    this.newWhiteboard = { boardName: '', parameters: [], groups: [] };
+    this.newWhiteboard = { boardName: '', parameters: [], groups: [], members: [] };
 
     $("#createWhiteboardModal").modal('open');
     this.initializeTabs();
@@ -60,6 +61,10 @@ export class HomeComponent implements OnInit {
 
       for (let group of this.newWhiteboard.groups) {
         this.homeService.addGroupToWhiteboard(wbId, group.value);
+      }
+
+      for (let member of this.newWhiteboard.members) {
+        this.toolbarService.inviteUser(member.value, wbId);
       }
 
       var subtitles = [];
@@ -96,6 +101,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  removeWhiteboard(wbID) {
+    this.toolbarService.removeCurrentUserFromWHiteboard(wbID).then(response => {
+      this.loadWhiteboards();
+    });
+  }
+
   lockOrUnlockWhiteboard(wbID) {
     this.homeService.lockOrUnlockWhiteboard(wbID).then(response => {
       this.loadWhiteboards();
@@ -118,4 +129,11 @@ export class HomeComponent implements OnInit {
     this.newWhiteboard.groups.splice(index, 1);
   }
 
+  addMember() {
+    this.newWhiteboard.members.push({ value: "New Member Email" });
+  }
+
+  deleteMember(index: number) {
+    this.newWhiteboard.members.splice(index, 1);
+  }
 }

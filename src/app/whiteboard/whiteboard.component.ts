@@ -15,6 +15,7 @@ export class WhiteboardComponent implements OnInit {
 
   whiteboardId;
   whiteboardLayout = [];
+  whiteboardUsers = [];
   whiteboardContent = {};
   stickyNotesColors = [];
   newStickyNote = { stickylines: [] };
@@ -35,8 +36,6 @@ export class WhiteboardComponent implements OnInit {
   loadStickyNotes() {
     this.whiteboardService.getStickyNotes(this.whiteboardId).then(response => {
       this.whiteboardContent = JSON.parse(response['message'][0]['result']);
-
-      console.log(JSON.stringify(this.whiteboardContent));
 
       this.whiteboardService.getWhiteboardLayout(this.whiteboardContent["whiteboardLayoutID"]).then(response => {
         this.whiteboardLayout = response['message'];
@@ -156,6 +155,21 @@ export class WhiteboardComponent implements OnInit {
     this.whiteboardService.deleteGroup(groupId).then(response => {
       this.loadStickyNotes();
     });
+  }
+
+  openUsersModal() {
+    this.whiteboardService.getWhiteboardUsers(this.whiteboardId).then(response => {
+      this.whiteboardUsers = response["message"];
+      console.log(this.whiteboardContent);
+      console.log(this.whiteboardUsers);
+    });
+
+
+    $("#usersModal").modal('open');
+  }
+
+  closeUsersModal() {
+    $("#usersModal").modal('close');
   }
 
 }

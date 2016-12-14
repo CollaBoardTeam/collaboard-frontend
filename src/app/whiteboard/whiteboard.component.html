@@ -8,7 +8,7 @@
       </span>
       <ul class="right">
         <li *ngIf="whiteboardContent.whiteboardState === 0"><a class="waves-effect waves-light" (click)="openCreateStickyNoteModal()"><i class="material-icons">add</i></a></li>
-        <li><a><i class="material-icons">settings</i></a></li>
+        <li><a><i class="material-icons" (click)="openUsersModal()">settings</i></a></li>
       </ul>
     </div>
   </nav>
@@ -84,14 +84,8 @@
           <i class="material-icons black-text" *ngIf="newStickyNote.stickyColor === color.color">done</i>
         </a>
       </div>
-      <!--
-      <a class='dropdown-button btn' data-activates='groups-dropdown'>Change group</a>
-      <ul id='groups-dropdown' class='dropdown-content'>
-        <li *ngFor="let group of whiteboardContent.whiteboardGroups"><a (click)="newStickyNote.groupID = group.groupID">{{group.groupName}}</a></li>
-      </ul>
-      -->
       <p *ngFor="let group of whiteboardContent.whiteboardGroups">
-        <input name="group" type="radio" id="{{group.groupID}}" (click)="newStickyNote.groupID = group.groupID"/>
+        <input name="group" type="radio" id="{{group.groupID}}" (click)="newStickyNote.groupID = group.groupID" />
         <label attr.for="{{group.groupID}}">{{group.groupName}}</label>
       </p>
     </form>
@@ -126,5 +120,21 @@
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="editGroupName()">Edit</a>
     <a class="waves-effect waves-light btn-flat" (click)="closeEditGroupNameModal()">Cancel</a>
+  </div>
+</div>
+<div id="usersModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
+  <div class="modal-content">
+    <h4>Users</h4><!--
+    <ul class="collection" *ngFor="let group of newWhiteboard.groups; let i = index">
+      <li class="collection-item valign-wrapper">
+        <div class="col s11">
+          <input id="groupName{{i}}" type="text" [(ngModel)]="newWhiteboard.groups[i].value" name="groupName{{i}}">
+        </div>
+        <a class="secondary-content col waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2" (click)="deleteGroup(i)">delete</i></a>
+      </li>
+    </ul>-->
+  </div>
+  <div class="modal-footer">
+    <a class="waves-effect waves-light btn-flat" (click)="closeUsersModal()">Close</a>
   </div>
 </div>

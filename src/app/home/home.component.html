@@ -22,7 +22,7 @@
           <a class="waves-effect waves-light" (click)="deleteWhiteboard(whiteboard.idWhiteBoard)"><i class="material-icons light-blue-text text-lighten-2">delete</i></a>
         </div>
         <div class="right-align" *ngIf="whiteboard.description !== 'owner'">
-          <a class="waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2">clear</i></a>
+          <a class="waves-effect waves-light" (click)="removeWhiteboard(whiteboard.idWhiteBoard)"><i class="material-icons light-blue-text text-lighten-2">clear</i></a>
         </div>
         <p>{{whiteboard.boardName}}</p>
         <p>Owner: {{whiteboard.fullName}}</p>
@@ -77,7 +77,19 @@
             </li>
           </ul>
         </div>
-        <div id="tabMembers" class="col s12">Members (available soon)</div>
+        <div id="tabMembers" class="col s12">
+          <div class="right-align">
+            <a class="waves-effect waves-light light-blue lighten-2 btn" (click)="addMember()"><i class="material-icons left">add</i>Add Member</a>
+          </div>
+          <ul class="collection" *ngFor="let member of newWhiteboard.members; let i = index">
+            <li class="collection-item valign-wrapper">
+              <div class="col s11">
+                <input id="memberName{{i}}" type="text" [(ngModel)]="newWhiteboard.members[i].value" name="memberName{{i}}">
+              </div>
+              <a class="secondary-content col waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2" (click)="deleteMember(i)">delete</i></a>
+            </li>
+          </ul>
+        </div>
       </div>
     </form>
   </div>

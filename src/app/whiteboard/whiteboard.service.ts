@@ -19,6 +19,7 @@ export class WhiteboardService {
     deleteStickyNotePath = "stickynote/delete-st/";
     deleteGroupPath = "group/delete-group/";
     getWhiteboardLayoutPath = "layout/get-layouts/";
+    getWhiteboardUsersPath = "whiteboard/get-wb-users/";
 
     constructor(private http: Http, private authService: AuthService) {
         this.user = this.authService.getUser();
@@ -46,8 +47,6 @@ export class WhiteboardService {
             "stickypositon": position,
             "stickylines": stickylines
         };
-
-        console.log(JSON.stringify(stickyNote));
 
         return this.http.post(CollaboardAPI.url + this.createStickyNotePath, stickyNote, { headers: this.headers })
             .toPromise()
@@ -103,6 +102,12 @@ export class WhiteboardService {
 
     getWhiteboardLayout(id: number): Promise<any[]> {
         return this.http.get(CollaboardAPI.url + this.getWhiteboardLayoutPath + id, { headers: this.headers })
+            .toPromise()
+            .then(response => response.json() as any[]);
+    }
+
+    getWhiteboardUsers(wbid): Promise<any[]> {
+        return this.http.get(CollaboardAPI.url + this.getWhiteboardUsersPath + wbid, { headers: this.headers })
             .toPromise()
             .then(response => response.json() as any[]);
     }
