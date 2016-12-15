@@ -1,9 +1,10 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { WhiteboardService } from './whiteboard.service';
 import { ToolbarService } from '../toolbar/toolbar.service';
 import { AuthService } from '../app/auth.service';
+import { SocketService } from '../socket.service';
 
 declare var $: any;
 
@@ -11,9 +12,9 @@ declare var $: any;
   selector: 'whiteboard',
   templateUrl: './whiteboard.component.html',
   styleUrls: ['./whiteboard.component.css'],
-  providers: [WhiteboardService, ToolbarService, AuthService]
+  providers: [WhiteboardService, ToolbarService, AuthService, SocketService]
 })
-export class WhiteboardComponent implements OnInit {
+export class WhiteboardComponent implements OnInit, OnDestroy {
 
   user;
   whiteboardId;
@@ -24,9 +25,12 @@ export class WhiteboardComponent implements OnInit {
   newStickyNote = { stickylines: [] };
   newGroup = { id: '', name: '' };
   selectedStickyNote;
+  connection;
+  messages = [];
 
   constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService,
-    private toolbarService: ToolbarService, private authService: AuthService) {
+    private toolbarService: ToolbarService, private authService: AuthService,
+    private socketService: SocketService) {
     this.user = this.authService.getUser();
   }
 
@@ -35,7 +39,27 @@ export class WhiteboardComponent implements OnInit {
       this.whiteboardId = params['id'];
       this.loadStickyNotes();
       this.loadStickyNotesColors();
+      this.loadSockets();
     });
+  }
+
+  ngOnDestroy() {
+    this.connection.unsubscribe();
+  }
+
+  sendUpdateMessage() {
+    this.socketService.sendSpecific("ROOM_WB_" + this.whiteboardId, "update");
+  }
+
+  loadSockets() {
+    this.connection = this.socketService.getMessages().subscribe(message => {
+      this.messages.push(message);
+      if(message === "update"){
+        this.loadStickyNotes();
+      }
+    });
+
+    this.socketService.joinRoom("ROOM_WB_" + this.whiteboardId);
   }
 
   loadStickyNotes() {
@@ -87,6 +111,7 @@ export class WhiteboardComponent implements OnInit {
 
   editGroupName() {
     this.whiteboardService.changeGroupName(this.newGroup.id, this.newGroup.name).then(response => {
+      this.sendUpdateMessage();
       this.loadStickyNotes();
     });
     this.closeEditGroupNameModal();
@@ -113,6 +138,7 @@ export class WhiteboardComponent implements OnInit {
       i++;
     });
     this.whiteboardService.createStickyNote(this.getColorId(this.newStickyNote["stickyColor"]), 1, this.whiteboardId, lines).then(response => {
+      this.sendUpdateMessage();
       this.loadStickyNotes();
     });
     this.closeCreateStickyNoteModal();
@@ -131,9 +157,11 @@ export class WhiteboardComponent implements OnInit {
       this.whiteboardService.changeStickyNoteGroup(this.newStickyNote["stickyId"], this.newStickyNote["groupID"]).then(response => {
         if (this.newStickyNote["oldColor"] !== this.newStickyNote["stickyColor"]) {
           this.whiteboardService.changeStickyNoteColor(this.newStickyNote["stickyId"], this.getColorId(this.newStickyNote["stickyColor"])).then(response => {
+            this.sendUpdateMessage();
             this.loadStickyNotes();
           });
         } else {
+          this.sendUpdateMessage();
           this.loadStickyNotes();
         }
       });
@@ -151,6 +179,7 @@ export class WhiteboardComponent implements OnInit {
 
   deleteStickyNote() {
     this.whiteboardService.deleteStickyNote(this.selectedStickyNote.stickyId).then(response => {
+      this.sendUpdateMessage();
       this.loadStickyNotes();
     });
     this.closeDeleteStickyNoteModal();
@@ -158,6 +187,7 @@ export class WhiteboardComponent implements OnInit {
 
   deleteGroup(groupId) {
     this.whiteboardService.deleteGroup(groupId).then(response => {
+      this.sendUpdateMessage();
       this.loadStickyNotes();
     });
   }
