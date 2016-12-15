@@ -8,7 +8,7 @@
       </span>
       <ul class="right">
         <li *ngIf="whiteboardContent.whiteboardState === 0"><a class="waves-effect waves-light" (click)="openCreateStickyNoteModal()"><i class="material-icons">add</i></a></li>
-        <li><a><i class="material-icons" (click)="openUsersModal()">settings</i></a></li>
+        <li *ngIf="user.id===whiteboardContent.whiteboardOwner"><a><i class="material-icons" (click)="openUsersModal()">settings</i></a></li>
       </ul>
     </div>
   </nav>
@@ -124,15 +124,15 @@
 </div>
 <div id="usersModal" materialize="modal" [materializeParams]="[{dismissible: false}]" class="modal modal-fixed-footer white">
   <div class="modal-content">
-    <h4>Users</h4><!--
-    <ul class="collection" *ngFor="let group of newWhiteboard.groups; let i = index">
+    <h4>Users</h4>
+    <ul class="collection" *ngFor="let user of whiteboardUsers">
       <li class="collection-item valign-wrapper">
         <div class="col s11">
-          <input id="groupName{{i}}" type="text" [(ngModel)]="newWhiteboard.groups[i].value" name="groupName{{i}}">
+          <p>{{user.email}}</p>
         </div>
-        <a class="secondary-content col waves-effect waves-light"><i class="material-icons light-blue-text text-lighten-2" (click)="deleteGroup(i)">delete</i></a>
+        <a class="secondary-content col waves-effect waves-light" *ngIf="user.idUser!==whiteboardContent.whiteboardOwner"><i class="material-icons light-blue-text text-lighten-2" (click)="removeUser(user.idUser)">delete</i></a>
       </li>
-    </ul>-->
+    </ul>
   </div>
   <div class="modal-footer">
     <a class="waves-effect waves-light btn-flat" (click)="closeUsersModal()">Close</a>

@@ -2,6 +2,8 @@ import 'rxjs/add/operator/switchMap';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { WhiteboardService } from './whiteboard.service';
+import { ToolbarService } from '../toolbar/toolbar.service';
+import { AuthService } from '../app/auth.service';
 
 declare var $: any;
 
@@ -9,10 +11,11 @@ declare var $: any;
   selector: 'whiteboard',
   templateUrl: './whiteboard.component.html',
   styleUrls: ['./whiteboard.component.css'],
-  providers: [WhiteboardService]
+  providers: [WhiteboardService, ToolbarService, AuthService]
 })
 export class WhiteboardComponent implements OnInit {
 
+  user;
   whiteboardId;
   whiteboardLayout = [];
   whiteboardUsers = [];
@@ -22,7 +25,9 @@ export class WhiteboardComponent implements OnInit {
   newGroup = { id: '', name: '' };
   selectedStickyNote;
 
-  constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService) {
+  constructor(private route: ActivatedRoute, private whiteboardService: WhiteboardService,
+    private toolbarService: ToolbarService, private authService: AuthService) {
+    this.user = this.authService.getUser();
   }
 
   ngOnInit() {
@@ -158,18 +163,24 @@ export class WhiteboardComponent implements OnInit {
   }
 
   openUsersModal() {
+    this.loadWhiteboardUsers();
+    $("#usersModal").modal('open');
+  }
+
+  loadWhiteboardUsers() {
     this.whiteboardService.getWhiteboardUsers(this.whiteboardId).then(response => {
       this.whiteboardUsers = response["message"];
-      console.log(this.whiteboardContent);
-      console.log(this.whiteboardUsers);
     });
-
-
-    $("#usersModal").modal('open');
   }
 
   closeUsersModal() {
     $("#usersModal").modal('close');
+  }
+
+  removeUser(userid) {
+    this.toolbarService.removeUserFromWHiteboard(userid, this.whiteboardId).then(response => {
+      this.loadWhiteboardUsers();
+    });
   }
 
 }
